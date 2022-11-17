@@ -1,5 +1,5 @@
-# Name: 
-# Matriculation number: 
+# Name: Tim Schlachter
+# Matriculation number: 7039326
 
 def countLetters(text: str) -> dict[str, int]:
     '''

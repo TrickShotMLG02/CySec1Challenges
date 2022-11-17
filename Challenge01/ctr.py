@@ -1,5 +1,5 @@
-# Name: 
-# Matriculation number: 
+# Name: Tim Schlachter
+# Matriculation number: 7039326
 
 def xor(x1: bytes, x2: bytes) -> bytes:
     '''
@@ -22,6 +22,27 @@ def exchange(plaintext: bytes, ciphertext: bytes, new_plaintext: bytes) -> bytes
     Returns:
         our new ciphertext
     '''
+
+    Ek = xor(new_plaintext, ciphertext)
+    #return xor(Ek, XXX)
+
+    c = 0
+    for b in Ek:
+        print(Ek[c:c+1])
+
+        c+=1
+
+
+
+    new_ciphertext = b''
+    iv = 0
+    while iv < len(new_plaintext.decode()):
+        new_ciphertext += xor(Ek[iv:iv+1], new_plaintext[iv:iv+1])
+        #new_ciphertext += xor(Ek[iv:iv+1], new_plaintext[iv:iv+1])
+        iv += 1
+
+    print(new_ciphertext)
+
     pass
 
 
