@@ -9,7 +9,16 @@ def countLetters(text: str) -> dict[str, int]:
     Returns:
         Dictionary with number of occurrences for every letter (as lowercase)
     '''
-    pass
+
+    freqDict = dict({"a": 0, "b": 0, "c": 0, "d": 0, "e": 0, "f": 0, "g": 0, "h": 0, "i": 0, "j": 0, "k": 0, "l": 0,
+                     "m": 0, "n": 0, "o": 0, "p": 0, "q": 0, "r": 0, "s": 0, "t": 0, "u": 0, "v": 0, "w": 0, "x": 0,
+                     "y": 0, "z": 0})
+
+    for c in text:
+        if c.isalpha():
+            freqDict[c.lower()] = freqDict[c.lower()] + 1
+
+    return freqDict
 
 
 def convertToFrequency(letter_counts: dict[str, int]) -> dict[str, float]:
@@ -20,7 +29,18 @@ def convertToFrequency(letter_counts: dict[str, int]) -> dict[str, float]:
     Returns:
         Dictionary with the frequency of occurrence for every letter (as lowercase)
     '''
-    pass
+
+    charCount = 0
+    freqDict = dict()
+
+    for c in letter_counts:
+        charCount += letter_counts[c]
+        freqDict[c] = 0.0
+
+    for k in letter_counts:
+        freqDict[k] = letter_counts[k] / charCount
+
+    return freqDict
 
 
 def plotLetterFreq(frequencies: dict[str, float], file=None) -> None:
