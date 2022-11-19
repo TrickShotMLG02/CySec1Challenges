@@ -54,6 +54,7 @@ def getShift(cipher: str, en_dictionary: str) -> int:
     MAX_CHAR_ID = 127
     MAX_SHIFT = MAX_CHAR_ID - MIN_CHAR_ID
 
+    dictList = en_dictionary.splitlines()
 
     shiftCounter = 0
     tmpPlainText = cipher
@@ -69,7 +70,7 @@ def getShift(cipher: str, en_dictionary: str) -> int:
         for word in splittedPlain:
             evalBool = True
 
-            if not en_dictionary.__contains__(word):
+            if not (word.lower() in dictList or word.capitalize() in dictList):
                 evalBool = False
                 break
 
@@ -77,6 +78,8 @@ def getShift(cipher: str, en_dictionary: str) -> int:
             return shiftCounter
 
         shiftCounter += 1
+
+    return False
 
 
 if __name__ == "__main__":
