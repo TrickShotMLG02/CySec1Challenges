@@ -26,13 +26,6 @@ def exchange(plaintext: bytes, ciphertext: bytes, new_plaintext: bytes) -> bytes
     Ek = xor(new_plaintext, ciphertext)
     #return xor(Ek, XXX)
 
-    c = 0
-    for b in Ek:
-        print(Ek[c:c+1])
-
-        c+=1
-
-
 
     new_ciphertext = b''
     iv = 0
