@@ -20,7 +20,7 @@ class Alice:
         self.p = p
         self.g = g
 
-        a = random.randint(p, g)
+        a = random.randrange(0, p)
         self.a = a  # <- NO TOUCHING!!!!
 
         A = pow(g, a) % p
@@ -53,7 +53,7 @@ class Bob:
         self.p = p
         self.g = g
 
-        b = random.randint(p, g)
+        b = random.randrange(0, p)
         self.b = b  # <- NO TOUCHING!!!!
 
         B = pow(g, b) % p
