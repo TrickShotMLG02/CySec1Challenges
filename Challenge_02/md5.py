@@ -16,10 +16,10 @@ class MD5():
     BLOCK_SIZE = 64  # bytes (= 512 bits)
 
     # Initialize variables:
-    a0 = 0x67452301# TODO: Implement
-    b0 = 0xEFCDAB89# TODO: Implement
-    c0 = 0x98BADCFE# TODO: Implement
-    d0 = 0x10325476# TODO: Implement
+    a0 = 0x67452301
+    b0 = 0xEFCDAB89
+    c0 = 0x98BADCFE
+    d0 = 0x10325476
 
     def loadState(self, hash):
         '''
