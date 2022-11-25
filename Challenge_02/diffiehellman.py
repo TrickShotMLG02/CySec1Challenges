@@ -19,9 +19,12 @@ class Alice:
         """
         self.p = p
         self.g = g
-        a = # TODO: choose a
-        self.a = a # <- NO TOUCHING!!!!
-        return # TODO: calculate A
+
+        a = random.randint(p, g)
+        self.a = a  # <- NO TOUCHING!!!!
+
+        A = pow(g, a) % p
+        return A
 
     def keyAlice(self, b: int) -> int:
         """
@@ -30,8 +33,8 @@ class Alice:
         Returns:
             the shared key k
         """
-        # TODO: Implement
-        pass
+        key = pow(b, self.a) % self.p
+        return key
 
 
 class Bob:
@@ -49,9 +52,12 @@ class Bob:
         """
         self.p = p
         self.g = g
-        b = # TODO: choose b
-        self.b = b # <- NO TOUCHING!!!!
-        return # TODO: calculate B
+
+        b = random.randint(p, g)
+        self.b = b  # <- NO TOUCHING!!!!
+
+        B = pow(g, b) % p
+        return B
 
     def keyBob(self, a: int) -> int:
         """
@@ -60,8 +66,9 @@ class Bob:
         Returns:
             the shared key k
         """
-        # TODO: Implement
-        pass
+
+        key = pow(a, self.b) % self.p
+        return key
 
 
 def exchangeKey(p: int, g: int) -> tuple[int, int]:
@@ -72,7 +79,16 @@ def exchangeKey(p: int, g: int) -> tuple[int, int]:
     Returns:
         simulates a Diffie-Hellman Key Exchange and returns the key of alice and the key of bob as a tuple
     """
+
     # TODO: Implement
+    A = Alice()
+    B = Bob()
+
+    initialA = A.initialAlice(p, g)
+    initialB = B.initialBob(p, g)
+
+    k_alice = A.keyAlice(initialB)
+    k_bob = B.keyBob(initialA)
 
     return k_alice, k_bob
 
