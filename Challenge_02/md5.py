@@ -1,10 +1,10 @@
-# Name:
-# Matriculation number:
+# Name: Tim Schlachter
+# Matriculation number: 7039326
 
 from math import floor, sin, ceil
 
-class MD5():
 
+class MD5():
     # s specifies the per-round shift amounts
     S = [7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22, 5, 9, 14, 20, 5, 9, 14, 20, 5, 9, 14, 20, 5, 9, 14,
          20, 4, 11, 16, 23, 4, 11, 16, 23, 4, 11, 16, 23, 4, 11, 16, 23, 6, 10, 15, 21, 6, 10, 15, 21, 6, 10, 15, 21, 6,
@@ -66,7 +66,7 @@ class MD5():
         '''
 
         # To append later
-        original_len = len(byte_array)*8 % 2 ** 64
+        original_len = len(byte_array) * 8 % 2 ** 64
 
         # adding a single 1 bit
         # -> since letters are fixed to 8 bits with UTF-8, we can directly append 〈10000000〉_10 (〈128〉_2)
@@ -88,6 +88,9 @@ class MD5():
         Returns:
             hex representation of the hash as a string (without 0x)
         '''
+
+        # Page for researching md5: https://www.ietf.org/rfc/rfc1321.txt (last access: 2022-11-26)
+
         left_rotate = lambda x, n: (x << n) | (x >> (32 - n))
 
         # Split the message into blocks of BLOCK_SIZE and run algorithm on each once
@@ -95,7 +98,7 @@ class MD5():
             current_block = padded_byte_array[self.BLOCK_SIZE * offset: self.BLOCK_SIZE * (offset + 1)]
 
             # cut into 16 8 byte words
-            current_blocks = [] # = To M in wiki ... but M might be a bit confusing as a name
+            current_blocks = []  # = To M in wiki ... but M might be a bit confusing as a name
             for i in range(0, 16):
                 # Change representation from bytes to integer -> better for doing math
                 value = int.from_bytes(current_block[4 * i: 4 * i + 4], 'little')
@@ -111,41 +114,42 @@ class MD5():
             # Main loop
             for i in range(0, 64):
                 if 0 <= i <= 15:
-                    f = # TODO: Implement
+                    f = (((b) & (c)) | ((~b) & (d)))
                     g = i
                 elif 16 <= i <= 31:
-                    f = # TODO: Implement
+                    f = (((b) & (d)) | ((c) & (~d)))
                     g = (5 * i + 1) % 16
                 elif 32 <= i <= 47:
-                    f = # TODO: Implement
+                    f = ((b) ^ (c) ^ (d))
                     g = (3 * i + 5) % 16
                 elif 48 <= i <= 63:
-                    f = # TODO: Implement
+                    f = ((c) ^ ((b) | (~d)))
                     g = (7 * i) % 16
 
                 # % 2**32 to stay within 32 bit
-                f = (f + a) % 2**32
-                f = (f + self.K[i]) % 2**32
-                f = (f + current_blocks[g]) % 2**32
+                f = (f + a) % 2 ** 32
+                f = (f + self.K[i]) % 2 ** 32
+                f = (f + current_blocks[g]) % 2 ** 32
 
-                a = # TODO: Implement
-                d = # TODO: Implement
-                c = # TODO: Implement
-                b = (b + left_rotate(f, self.S[i])) % 2**32
+                a = d
+                d = c
+                c = b
+                b = (b + left_rotate(f, self.S[i])) % 2 ** 32
 
             # Add this chunk's hash to result so far:
-            self.a0 = (self.a0 + a) % 2**32
-            self.b0 = (self.b0 + b) % 2**32
-            self.c0 = (self.c0 + c) % 2**32
-            self.d0 = (self.d0 + d) % 2**32
+            self.a0 = (self.a0 + a) % 2 ** 32
+            self.b0 = (self.b0 + b) % 2 ** 32
+            self.c0 = (self.c0 + c) % 2 ** 32
+            self.d0 = (self.d0 + d) % 2 ** 32
 
         # the real meaning of: a0 append b0 append c0 append d0
         result_sum = self.a0 + (self.b0 << 32) + (self.c0 << 64) + (self.d0 << 96)
 
         # Some formatting magic, because python loves to throw away starting zeros
-        result_bytes = result_sum.to_bytes(16, byteorder='little') # (Output is in little-endian)
+        result_bytes = result_sum.to_bytes(16, byteorder='little')  # (Output is in little-endian)
         result = '{:032x}'.format(int.from_bytes(result_bytes, byteorder='big'))
         return result
+
 
 if __name__ == "__main__":
     msg = "Hash me :D"
@@ -158,4 +162,3 @@ if __name__ == "__main__":
     print(f"Hash:                   {hash}")
     print(f"Expected:               {expected_hash}")
     print(f"Worked:                 {hash == expected_hash}")
-
