@@ -23,6 +23,7 @@ def exchange(plaintext: bytes, ciphertext: bytes, new_plaintext: bytes) -> bytes
         our new ciphertext
     '''
 
+    # Task failed successfully after waisting my time :|
 
     new_ciphertext = b''
     Ek = b''
@@ -33,8 +34,8 @@ def exchange(plaintext: bytes, ciphertext: bytes, new_plaintext: bytes) -> bytes
 
     while iv < len(new_plaintext.decode()):
         new_ciphertext += xor(Ek[iv:iv+1], new_plaintext[iv:iv+1])
-        new_key = int.from_bytes(Ek) + 1
-        Ek = new_key.to_bytes(len(Ek))
+        new_key = int.from_bytes(Ek, byteorder='big') + 1
+        Ek = new_key.to_bytes(len(Ek), 'big')
         iv += 1
 
     return new_ciphertext
