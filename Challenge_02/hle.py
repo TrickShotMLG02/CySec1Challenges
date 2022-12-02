@@ -1,5 +1,5 @@
-# Name:
-# Matriculation number:
+# Name: Tim Schlachter
+# Matriculation number: 7039326
 
 from md5 import MD5
 
