@@ -27,7 +27,22 @@ class HashLengthExtension:
             bytearray of the message + padding
         '''
         message_copy = message[:]  # copy byte_array, because else you would overwrite the original message
-        pass
+
+
+        messageLength = len(message_copy)
+        message_copy += b'\x80'
+
+        padLen = 512 - 64 - messageLength - 8
+
+        for i in range(0, int(padLen/8)):
+            message_copy += b'\x00'
+
+        for i in range(0, length):
+            message_copy += b'\x00'
+
+        message_copy += int((messageLength + self.KEYLENGTH) * 8).to_bytes(8, 'little')
+
+        return message_copy
 
     def attack(self):
         data_to_add = "&lat=49.259&long=7.051"
