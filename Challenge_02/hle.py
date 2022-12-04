@@ -28,19 +28,35 @@ class HashLengthExtension:
         '''
         message_copy = message[:]  # copy byte_array, because else you would overwrite the original message
 
+        PADDING_SIZE = 8
 
-        messageLength = len(message_copy)
+        # Working
+        MessageLengthAppend = ((length + self.KEYLENGTH + len(message_copy)) * 8) % 2 ** 64
+        messageLength = len(message_copy) * 8
+
+        print(MessageLengthAppend)
+
+        # adding a single 1 bit
+        # -> since letters are fixed to 8 bits with UTF-8, we can directly append 〈10000000〉_10 (〈128〉_2)
         message_copy += b'\x80'
+
+
+        paddingLength = self.BLOCK_SIZE * 8 - PADDING_SIZE * 8 - messageLength - 8
+
+        for i in range(0, int(paddingLength / 8)):
+            message_copy += b'\x00'
+
+        # Fix this shit
 
         padLen = 512 - 64 - messageLength - 8
 
-        for i in range(0, int(padLen/8)):
-            message_copy += b'\x00'
 
         for i in range(0, length):
             message_copy += b'\x00'
 
-        message_copy += int((messageLength + self.KEYLENGTH) * 8).to_bytes(8, 'little')
+
+        # Working
+        message_copy += int(MessageLengthAppend).to_bytes(8, 'little')
 
         return message_copy
 
@@ -58,6 +74,10 @@ class HashLengthExtension:
         print("")
 
         # TODO: Implement hash length extension attack here (msg == request)
+
+        messageLength = len(original_msg_b)
+        #original_msg_b += data_to_add.encode()
+        #MD5.loadState()
 
         # send order to pizzeria
         # send as bytes like you would do it with something like the socket lib
