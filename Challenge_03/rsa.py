@@ -1,5 +1,5 @@
-# Name:
-# Matriculation number:
+# Name: Tim Schlachter
+# Matriculation number: 7039326
 
 def encrypt(m: int, e: int, n: int) -> int:
     """
@@ -10,8 +10,9 @@ def encrypt(m: int, e: int, n: int) -> int:
     Returns:
         c
     """
-    # TODO: Implement
-    pass
+
+    return (m**e) % n
+
 
 def decrypt(c: int, d: int, n: int) -> int:
     """
@@ -22,8 +23,9 @@ def decrypt(c: int, d: int, n: int) -> int:
     Returns:
         m
     """
-    # TODO: Implement
-    pass
+
+    return (c**d) % n
+
 
 def gcd(x: int, y: int) -> int:
     '''
@@ -33,8 +35,26 @@ def gcd(x: int, y: int) -> int:
     Returns:
         greatest common divisor
     '''
-    # TODO: Implement
-    pass
+
+    # example from lecture 05 (slide 15)
+    # gcd (10,7) -> x = 10, y = 7
+    # 10 = 1 ∗ 7 + 3
+    # 7 = 2 ∗ 3 + 1
+    # 10 − 1 ∗ 7 = 3
+    # 7 − 2 ∗ 3 = 1
+    # 7 − 2 ∗ 3 = 7 − 2 ∗ 10 − 1 ∗ 7 =
+    # 7 − 2 ∗ 10 + 2 ∗ 7 = 3 ∗ 7 − 2 ∗ 10 = 1
+    # 3 ∗ 7 = 1 𝑚𝑜𝑑 10
+
+    if x <= 0 or y <= 0:
+        pass
+    else:
+        while y != 0:
+            r = x % y
+            x = y
+            y = r
+
+        return x
 
 def extendedEuclideanAlgorithm(x: int, y: int) -> tuple[int, int, int]:
     '''
@@ -45,8 +65,15 @@ def extendedEuclideanAlgorithm(x: int, y: int) -> tuple[int, int, int]:
     Returns:
         (d, a, b) -> d = x * a + y * b and d = gcd(x, y)
     '''
-    # TODO: Implement
-    return d, a, b
+    if x == 0: # Check if x = 0, because then we can return the result directly
+        return y, 0, 1 # since x = 0 -> 0 * a = 0 -> a = 0; d = gcd = y if x is 0; since y * b = d = y -> y * b = y -> y = 1
+
+    (d, new_a, new_b) = extendedEuclideanAlgorithm(y % x, x) # since we now need to calculate again with the remainder of the larger number mod the smaller one and the smaller one
+
+    a = new_b - int(y / x) * new_a # Divide smaller number by larger one and cast to int so there are no floats!
+    b = new_a # Swapping arguments
+
+    return (d, a, b)
 
 def calculateKeys(p: int, q: int, e: int) -> tuple[tuple[int, int], tuple[int, int, int]]:
     '''
@@ -57,8 +84,23 @@ def calculateKeys(p: int, q: int, e: int) -> tuple[tuple[int, int], tuple[int, i
     Returns:
         (pk, sk) with pk:= (n, e) and sk:= (p, q, d) or None if e is not valid
     '''
-    # TODO: Implement
-    return ((n, e), (p, q, d))
+
+
+    N = p * q
+    phiN = (p-1) * (q-1)
+
+    # Since we want to calculate the inverse element with p, q and e
+    # e mod phi(N), where phi(N) = (p - 1) * (q - 1)
+    # Since the inverse element of e is   e^(-1) % phiN and the pow() function documentation states: Equivalent to base**exp with 2 arguments or base**exp % mod with 3 argument
+    d = pow(e, -1, phiN)
+
+    # or
+
+    d, a, b = extendedEuclideanAlgorithm(e, phiN)
+    d = a % phiN
+
+
+    return ((N, e), (p, q, d))
 
 if __name__ == "__main__":
     # Test part 1
@@ -89,5 +131,4 @@ if __name__ == "__main__":
     expected_keys = ((33, 17), (3, 11, 13))
     result_keys = calculateKeys(p, q, e)
     print(f"calculateKeys({p}, {q}, {e}) = {result_keys} and should be {expected_keys}, so it {'worked!' if expected_keys == result_keys else 'did not work!'}")
-
 
