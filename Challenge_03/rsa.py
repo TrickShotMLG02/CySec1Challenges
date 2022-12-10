@@ -89,13 +89,6 @@ def calculateKeys(p: int, q: int, e: int) -> tuple[tuple[int, int], tuple[int, i
     N = p * q
     phiN = (p-1) * (q-1)
 
-    # Since we want to calculate the inverse element with p, q and e
-    # e mod phi(N), where phi(N) = (p - 1) * (q - 1)
-    # Since the inverse element of e is   e^(-1) % phiN and the pow() function documentation states: Equivalent to base**exp with 2 arguments or base**exp % mod with 3 argument
-    d = pow(e, -1, phiN)
-
-    # or
-
     d, a, b = extendedEuclideanAlgorithm(e, phiN)
     d = a % phiN
 
