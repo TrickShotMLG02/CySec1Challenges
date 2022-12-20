@@ -13,11 +13,12 @@ class ARPSpoofingDetection:
             True if something fishy was detected and False otherwise
         """
 
-        if ip in self.arp_table or mac in self.arp_table:
-            return True
-        else:
+        if (self.arp_table.get(ip, -1) == -1 and list(self.arp_table.values()).count(mac) == 0) or self.arp_table.get(ip, -1) == mac:
             self.arp_table[ip] = mac
             return False
+        else:
+            return True
+
 
 
 
