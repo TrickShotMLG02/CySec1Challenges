@@ -1,3 +1,6 @@
+# Name: Tim Schlachter
+# Matriculation number: 7039326
+
 from binascii import hexlify, unhexlify
 
 
@@ -33,10 +36,6 @@ def parseEthernetFrame(frame: bytes) -> tuple[str, str, int, int, bytes, int]:
     Returns:
         (human-readable Dest. Ethernet, human-readable Source Ethernet src, ether_type (Type), length (of the payload in bytes), Payload, CRC32)
     """
-    # TODO: Implement (look at this ↑)
-
-
-
 
     dst_mac = bytesToMAC(frame[0:6])
     src_mac = bytesToMAC(frame[6:12])
