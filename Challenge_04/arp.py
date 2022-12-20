@@ -1,3 +1,6 @@
+# Name: Tim Schlachter
+# Matriculation number: 7039326
+
 class ARPSpoofingDetection:
     arp_table = {}
 
@@ -9,8 +12,13 @@ class ARPSpoofingDetection:
         Returns:
             True if something fishy was detected and False otherwise
         """
-        # TODO: Implement
-        return False
+
+        if ip in self.arp_table or mac in self.arp_table:
+            return True
+        else:
+            self.arp_table[ip] = mac
+            return False
+
 
 
 if __name__ == "__main__":
