@@ -1,3 +1,6 @@
+# Name: Tim Schlachter
+# Matriculation number: 7039326
+
 def convert(mac: str, prefix: str) -> str:
     """
     Args:
@@ -6,8 +9,23 @@ def convert(mac: str, prefix: str) -> str:
     Returns:
         IPv6 address
     """
-    # TODO: Implement
-    pass
+
+    # Flipping 7th bit of first byte
+    binaryFlipped = bin(int(mac[0:2], 16) ^ 2)
+    hexFlipped = hex(int(binaryFlipped, 2))
+    resultingMac = str(hexFlipped)[2:].zfill(2) + mac[2:]
+
+    # Inserting FF:FE in middle of string
+    MacLength = len(resultingMac)
+    resultingMac = resultingMac[0:int(MacLength/2+1)] + "ff:fe" + resultingMac[int(MacLength/2):]
+
+    # Removing every second : (beginning with the first one)
+
+    resultingMac = resultingMac[0:2] + resultingMac[3:6] + resultingMac[6:8] + resultingMac[9:12] + resultingMac[12:14] + resultingMac[15:18] + resultingMac[18:20] + resultingMac[21:25]
+
+    lladdr = prefix + resultingMac
+
+    return lladdr
 
 
 if __name__ == "__main__":
